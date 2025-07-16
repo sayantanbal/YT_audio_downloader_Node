@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>YouTube Audio Downloader - API Test</h1>
+    
+    <div>
+        <h2>Backend Health Check</h2>
+        <button onclick="testHealth()">Test Health</button>
+        <div id="health-result"></div>
+    </div>
+    
+    <div>
+        <h2>Video Info Test</h2>
+        <input type="text" id="video-url" placeholder="YouTube URL" style="width: 400px;">
+        <button onclick="testVideoInfo()">Get Video Info</button>
+        <div id="video-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5001/api';
+        
+        async function testHealth() {
+            const resultDiv = document.getElementById('health-result');
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                resultDiv.style.color = 'green';
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+                resultDiv.style.color = 'red';
+            }
+        }
+        
+        async function testVideoInfo() {
+            const url = document.getElementById('video-url').value;
+            const resultDiv = document.getElementById('video-result');
+            
+            if (!url) {
+                resultDiv.innerHTML = 'Please enter a YouTube URL';
+                resultDiv.style.color = 'orange';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/video-info`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                resultDiv.style.color = 'green';
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+                resultDiv.style.color = 'red';
+            }
+        }
+        
+        // Test health on page load
+        testHealth();
+    </script>
+</body>
+</html>
