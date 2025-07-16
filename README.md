@@ -2,7 +2,32 @@
 
 A modern, full-stack web application for downloading high-quality audio from YouTube videos. Built with React frontend and Node.js backend.
 
-![App Preview](https://img.shields.io/badge/Status-Ready%20to%20Use-brightgreen) ![React](https://img.shields.io/badge/React-19-blue) ![Node.js](https://img.shields.io/badge/Node.js-Latest-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
+![App Preview](https://img.shields.io/badge/Status-Read## 🔧 Development
+
+### Quick Development Setup
+```bash
+npm run dev          # Start both frontend and backend
+npm run frontend     # Start only frontend server
+npm run backend      # Start only backend server
+npm run build        # Build frontend for production
+npm run lint         # Check frontend code quality
+```
+
+### Frontend Development
+```bash
+cd frontend
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Check code quality
+```
+
+### Backend Development
+```bash
+cd backend
+npm start            # Start backend server
+# Backend uses ES modules and runs directly with node
+```ghtgreen) ![React](https://img.shields.io/badge/React-19-blue) ![Node.js](https://img.shields.io/badge/Node.js-Latest-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ## ✨ Features
 
@@ -26,8 +51,8 @@ A modern, full-stack web application for downloading high-quality audio from You
 
 ```
 ┌─────────────────┐    HTTP/JSON    ┌─────────────────┐
-│   React Frontend │ ◄─────────────► │  Node.js Backend │
-│   (Port 5174)   │   API Calls     │   (Port 5001)    │
+│  React Frontend │ ◄─────────────► │ Node.js Backend │
+│   (Port 5174)   │   API Calls     │   (Port 5001)   │
 └─────────────────┘                 └─────────────────┘
                                             │
                                             ▼
@@ -61,25 +86,21 @@ cd YT_audio_downloader_Node
 3. **Start the application:**
 ```bash
 ./start.sh
+# Or use: npm run dev (starts both frontend and backend)
 ```
 
 ### Manual Setup
 
 If you prefer manual setup:
 
-1. **Install frontend dependencies:**
+1. **Install all dependencies:**
 ```bash
-npm install
+npm run install-all
+# Or manually:
+# npm install && cd frontend && npm install && cd ../backend && npm install
 ```
 
-2. **Install backend dependencies:**
-```bash
-cd backend
-npm install
-cd ..
-```
-
-3. **Install FFmpeg:**
+2. **Install FFmpeg:**
 ```bash
 # macOS (using Homebrew)
 brew install ffmpeg
@@ -91,17 +112,20 @@ sudo apt update && sudo apt install ffmpeg
 choco install ffmpeg
 ```
 
-4. **Start the application:**
+3. **Start the application:**
 ```bash
-# Terminal 1 - Start Backend (from project root)
-cd backend
-npm start
-
-# Terminal 2 - Start Frontend (from project root)
+# Option 1: Use convenience script
 npm run dev
+
+# Option 2: Start manually in separate terminals
+# Terminal 1 - Backend
+cd backend && npm start
+
+# Terminal 2 - Frontend  
+cd frontend && npm run dev
 ```
 
-5. **Open your browser:**
+4. **Open your browser:**
    - Navigate to `http://localhost:5174` (or the port shown in terminal)
    - Backend runs on `http://localhost:5001`
 
@@ -176,20 +200,28 @@ const download = await fetch('http://localhost:5001/api/download', {
 ```
 YT_audio_downloader_Node/
 ├── README.md                 # Project documentation
-├── package.json             # Frontend dependencies
-├── vite.config.js          # Vite configuration
-├── eslint.config.js        # ESLint rules
-├── index.html              # Main HTML entry point
-├── src/                    # Frontend source code
-│   ├── App.jsx            # Main React component
-│   ├── App.css            # Application styles
-│   ├── main.jsx           # React entry point
-│   ├── index.css          # Global styles
-│   ├── services/
-│   │   └── api.js         # API service layer
-│   ├── utils/
-│   │   └── youtube.js     # YouTube URL utilities
-│   └── assets/            # Static assets
+├── DEVELOPMENT.md            # Developer guide
+├── FINAL_SUMMARY.md          # Project summary
+├── setup.sh                 # Setup script
+├── start.sh                 # Start script
+├── package.json             # Root package with workspace config
+├── frontend/                # Frontend application
+│   ├── package.json         # Frontend dependencies
+│   ├── vite.config.js      # Vite configuration
+│   ├── eslint.config.js    # ESLint rules
+│   ├── index.html          # Main HTML entry point
+│   ├── src/                # Frontend source code
+│   │   ├── App.jsx        # Main React component
+│   │   ├── App.css        # Application styles
+│   │   ├── main.jsx       # React entry point
+│   │   ├── index.css      # Global styles
+│   │   ├── services/
+│   │   │   └── api.js     # API service layer
+│   │   ├── utils/
+│   │   │   └── youtube.js # YouTube URL utilities
+│   │   └── assets/        # Static assets
+│   └── public/            # Static public files
+│       └── vite.svg
 ├── backend/               # Backend source code
 │   ├── server.js         # Express server
 │   ├── package.json      # Backend dependencies
@@ -199,8 +231,6 @@ YT_audio_downloader_Node/
 │   ├── utils/           # Backend utilities
 │   │   └── youtube.js   # YouTube processing helpers
 │   └── downloads/       # Temporary file storage (auto-created)
-└── public/               # Static public files
-    └── vite.svg
 ```
 
 ## ⚙️ Configuration
@@ -293,9 +323,10 @@ lsof -ti:5001 | xargs kill -9
 ### Build for Production
 ```bash
 # Build frontend
-npm run build
+cd frontend && npm run build
+# Or from root: npm run build
 
-# The built files will be in the 'dist' directory
+# The built files will be in the 'frontend/dist' directory
 # Serve these files with any web server (nginx, Apache, etc.)
 ```
 

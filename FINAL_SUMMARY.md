@@ -80,21 +80,25 @@ youtube-audio-downloader/
 ├── 📋 FINAL_SUMMARY.md       # This file
 ├── 🔧 setup.sh              # Setup script
 ├── 🚀 start.sh              # Start script
-├── 📦 package.json          # Frontend deps
-├── ⚙️  vite.config.js       # Build config
-├── 🔍 eslint.config.js      # Code quality
-├── 🌐 index.html            # HTML entry
+├── 📦 package.json          # Root workspace config
 ├── 
-├── src/                     # Frontend code
-│   ├── 🎯 main.jsx          # React entry
-│   ├── 📱 App.jsx           # Main component
-│   ├── 🎨 App.css          # App styles
-│   ├── 🎨 index.css        # Global styles
-│   ├── services/
-│   │   └── 🔌 api.js       # API service
-│   ├── utils/
-│   │   └── 🔗 youtube.js   # URL utilities
-│   └── assets/
+├── frontend/                # Frontend application
+│   ├── 📦 package.json     # Frontend deps
+│   ├── ⚙️  vite.config.js  # Build config
+│   ├── 🔍 eslint.config.js # Code quality
+│   ├── 🌐 index.html       # HTML entry
+│   ├── src/                # Frontend code
+│   │   ├── 🎯 main.jsx     # React entry
+│   │   ├── 📱 App.jsx      # Main component
+│   │   ├── 🎨 App.css     # App styles
+│   │   ├── 🎨 index.css   # Global styles
+│   │   ├── services/
+│   │   │   └── 🔌 api.js  # API service
+│   │   ├── utils/
+│   │   │   └── 🔗 youtube.js # URL utilities
+│   │   └── assets/
+│   └── public/             # Static files
+│       └── 🎯 vite.svg
 │
 ├── backend/                 # Backend code
 │   ├── 📋 README.md        # Backend docs
@@ -106,15 +110,12 @@ youtube-audio-downloader/
 │   ├── utils/
 │   │   └── 🔗 youtube.js   # Backend utils
 │   └── downloads/          # Temp files
-│
-└── public/                 # Static files
-    └── 🎯 vite.svg
 ```
 
 ## 🎯 Usage Workflow
 
-1. **Setup**: Run `./setup.sh` (installs dependencies)
-2. **Start**: Run `./start.sh` (starts both servers)
+1. **Setup**: Run `./setup.sh` (installs all dependencies)
+2. **Start**: Run `./start.sh` or `npm run dev` (starts both servers)
 3. **Use**: Open browser → Paste YouTube URL → Download MP3
 4. **Save**: Browser shows save dialog → Choose location → Enjoy!
 
@@ -122,7 +123,7 @@ youtube-audio-downloader/
 
 1. **Clone**: `git clone <repo>`
 2. **Setup**: `./setup.sh`
-3. **Develop**: `./start.sh` (auto-reload enabled)
+3. **Develop**: `./start.sh` or `npm run dev` (auto-reload enabled)
 4. **Build**: `npm run build` (production)
 5. **Deploy**: Serve built files + backend
 

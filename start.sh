@@ -26,7 +26,7 @@ print_warning() {
 }
 
 # Check if we're in the right directory
-if [[ ! -f "package.json" ]] || [[ ! -d "backend" ]]; then
+if [[ ! -f "package.json" ]] || [[ ! -d "backend" ]] || [[ ! -d "frontend" ]]; then
     echo "❌ Error: Please run this script from the project root directory"
     exit 1
 fi
@@ -60,8 +60,10 @@ done
 
 if [[ "$FRONTEND_RUNNING" == false ]]; then
     print_info "Starting frontend server..."
+    cd frontend
     npm run dev &
     FRONTEND_PID=$!
+    cd ..
     print_success "Frontend server started (PID: $FRONTEND_PID)"
 fi
 

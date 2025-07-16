@@ -74,7 +74,10 @@ cd youtube-audio-downloader
 ./setup.sh
 
 # Or manual setup:
+npm run install-all
+# Or step by step:
 npm install
+cd frontend && npm install && cd ..
 cd backend && npm install && cd ..
 ```
 
@@ -83,27 +86,35 @@ cd backend && npm install && cd ..
 ```
 youtube-audio-downloader/
 ├── README.md                    # Main project documentation
+├── DEVELOPMENT.md               # This development guide
+├── FINAL_SUMMARY.md             # Project completion summary
 ├── setup.sh                    # Automated setup script
 ├── start.sh                    # Development startup script
-├── package.json                # Frontend dependencies
-├── vite.config.js              # Vite build configuration
-├── eslint.config.js            # ESLint rules
-├── index.html                  # Main HTML entry point
+├── package.json                # Root workspace configuration
 │
-├── src/                        # Frontend source code
-│   ├── main.jsx                # React application entry
-│   ├── App.jsx                 # Main React component
-│   ├── App.css                 # Application styles
-│   ├── index.css               # Global CSS styles
+├── frontend/                   # Frontend application
+│   ├── package.json            # Frontend dependencies
+│   ├── vite.config.js          # Vite build configuration
+│   ├── eslint.config.js        # ESLint rules
+│   ├── index.html              # Main HTML entry point
 │   │
-│   ├── services/               # API service layer
-│   │   └── api.js              # Backend communication
+│   ├── src/                    # Frontend source code
+│   │   ├── main.jsx            # React application entry
+│   │   ├── App.jsx             # Main React component
+│   │   ├── App.css             # Application styles
+│   │   ├── index.css           # Global CSS styles
+│   │   │
+│   │   ├── services/           # API service layer
+│   │   │   └── api.js          # Backend communication
+│   │   │
+│   │   ├── utils/              # Frontend utilities
+│   │   │   └── youtube.js      # URL validation & parsing
+│   │   │
+│   │   └── assets/             # Static assets
+│   │       └── react.svg
 │   │
-│   ├── utils/                  # Frontend utilities
-│   │   └── youtube.js          # URL validation & parsing
-│   │
-│   └── assets/                 # Static assets
-│       └── react.svg
+│   └── public/                 # Static public files
+│       └── vite.svg
 │
 ├── backend/                    # Backend source code
 │   ├── README.md               # Backend-specific docs
@@ -119,9 +130,6 @@ youtube-audio-downloader/
 │   │
 │   └── downloads/              # Temporary file storage
 │       └── (auto-generated)    # Processed MP3 files
-│
-└── public/                     # Static public files
-    └── vite.svg                # Vite logo
 ```
 
 ## 🔍 Code Architecture
@@ -304,24 +312,31 @@ app.get('/downloads/:filename', (req, res) => {
 
 ### Starting Development
 ```bash
+# Option 1: Start both servers with one command
+npm run dev
+
+# Option 2: Start separately
 # Terminal 1 - Backend with auto-reload
 cd backend
-npm run dev  # Uses nodemon for auto-restart
+npm start
 
 # Terminal 2 - Frontend with hot reload
-npm run dev  # Vite dev server
+cd frontend
+npm run dev
 ```
 
 ### Code Quality
 ```bash
 # Lint frontend code
-npm run lint
+cd frontend && npm run lint
+# Or from root: npm run lint
 
 # Build for production
-npm run build
+cd frontend && npm run build
+# Or from root: npm run build
 
 # Preview production build
-npm run preview
+cd frontend && npm run preview
 ```
 
 ### Testing Workflow

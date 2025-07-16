@@ -72,13 +72,25 @@ else
 fi
 
 echo ""
+print_status "Installing root dependencies..."
+if npm install; then
+    print_success "Root dependencies installed"
+else
+    print_error "Failed to install root dependencies"
+    exit 1
+fi
+
+echo ""
 print_status "Installing frontend dependencies..."
+cd frontend
 if npm install; then
     print_success "Frontend dependencies installed"
 else
     print_error "Failed to install frontend dependencies"
     exit 1
 fi
+
+cd ..
 
 echo ""
 print_status "Installing backend dependencies..."
@@ -101,9 +113,14 @@ echo "1. Start the backend (in one terminal):"
 echo "   cd backend && npm start"
 echo ""
 echo "2. Start the frontend (in another terminal):"
-echo "   npm run dev"
+echo "   cd frontend && npm run dev"
 echo ""
 echo "3. Open your browser to the URL shown by the frontend server"
+echo ""
+echo "Or use the convenience commands:"
+echo "   npm run dev        # Start both servers"
+echo "   npm run frontend   # Start only frontend"
+echo "   npm run backend    # Start only backend"
 echo ""
 echo "📚 For more information, see README.md"
 echo ""
