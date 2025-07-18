@@ -1,6 +1,9 @@
 // API service for YouTube Audio Downloader Backend
 
-const API_BASE_URL = 'http://localhost:5001/api';
+// Use relative URLs in production, absolute URLs in development
+const API_BASE_URL = import.meta.env.PROD 
+  ? '/api' // Use relative URLs in production
+  : 'http://localhost:5001/api'; // Use localhost in development
 
 class YouTubeAPIService {
   constructor() {

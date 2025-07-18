@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 8080; // AWS EB uses port 8080 by default
 
 // Create downloads directory if it doesn't exist
 const downloadsDir = path.join(__dirname, 'downloads');
@@ -31,16 +31,16 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 app.use(compression());
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173', // Vite default port
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:5173',
-    // Add your production domain here
-  ],
-  credentials: true
-}));
+
+// CORS configuration for production
+const CORS_ORIGINS = process.env.CORS_ORIGINS || 'http://localhost:5173';
+const corsOptions = {
+  origin: CORS_ORIGINS === '*' ? true : CORS_ORIGINS.split(','),
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -66,6 +66,21 @@ app.get('/downloads/:filename', (req, res) => {
 app.use('/api', videoRoutes);
 app.use('/api', downloadRoutes);
 
+// Serve static files from React build (production only)
+if (process.env.NODE_ENV === 'production') {
+  const frontendBuildPath = path.join(__dirname, '../frontend/dist');
+  app.use(express.static(frontendBuildPath));
+  
+  // Serve React app for all non-API routes
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api') && !req.path.startsWith('/downloads')) {
+      res.sendFile(path.join(frontendBuildPath, 'index.html'));
+    } else {
+      res.status(404).json({ error: 'Endpoint not found' });
+    }
+  });
+}
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -84,10 +99,12 @@ app.use((error, req, res, next) => {
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Endpoint not found' });
-});
+// 404 handler (development only)
+if (process.env.NODE_ENV !== 'production') {
+  app.use('*', (req, res) => {
+    res.status(404).json({ error: 'Endpoint not found' });
+  });
+}
 
 // Cleanup old downloads periodically (every hour)
 setInterval(() => {

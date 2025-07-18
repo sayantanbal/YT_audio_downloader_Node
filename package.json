@@ -1,34 +1,47 @@
 {
-  "name": "youtube-audio-downloader-workspace",
+  "name": "youtube-audio-downloader-fullstack",
   "version": "1.0.0",
-  "description": "Modern web application for downloading high-quality audio from YouTube videos",
-  "private": true,
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
+  "description": "Full-stack YouTube Audio Downloader for AWS Elastic Beanstalk",
+  "main": "backend/server.js",
+  "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
-    "frontend": "cd frontend && npm run dev",
+    "start": "cd backend && node server.js",
+    "build": "cd frontend && npm install && npm run build",
+    "postinstall": "npm run install-deps && npm run build",
+    "install-deps": "cd backend && npm install",
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm run dev",
+    "deploy": "npm run build && eb deploy",
     "setup": "./setup.sh",
-    "start": "./start.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "cd frontend && npm run lint"
   },
-  "devDependencies": {
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
     "concurrently": "^8.2.2"
   },
-  "keywords": ["youtube", "audio", "downloader", "mp3", "react", "vite", "node"],
+  "keywords": [
+    "youtube",
+    "audio",
+    "downloader",
+    "aws",
+    "elastic-beanstalk",
+    "fullstack",
+    "react",
+    "nodejs",
+    "mp3"
+  ],
   "author": "Your Name",
   "license": "MIT",
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/youtube-audio-downloader.git"
+    "url": "https://github.com/sayantanbal/YT_audio_downloader_Node.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/youtube-audio-downloader/issues"
+    "url": "https://github.com/sayantanbal/YT_audio_downloader_Node/issues"
   }
 }

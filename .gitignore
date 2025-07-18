@@ -12,6 +12,30 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# AWS Elastic Beanstalk
+.elasticbeanstalk/
+.aws/
+
+# Application specific
+backend/downloads/
+frontend/dist/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Coverage reports
+coverage/
+.coverage/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

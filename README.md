@@ -49,10 +49,11 @@ npm start            # Start backend server
 
 ## 🏗️ Architecture
 
+### Development Architecture
 ```
 ┌─────────────────┐    HTTP/JSON    ┌─────────────────┐
 │  React Frontend │ ◄─────────────► │ Node.js Backend │
-│   (Port 5174)   │   API Calls     │   (Port 5001)   │
+│   (Port 5173)   │   API Calls     │   (Port 5001)   │
 └─────────────────┘                 └─────────────────┘
                                             │
                                             ▼
@@ -60,6 +61,21 @@ npm start            # Start backend server
                                     │ ytdl-core +     │
                                     │ FFmpeg Pipeline │
                                     └─────────────────┘
+```
+
+### Production Architecture (AWS Elastic Beanstalk)
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    AWS Elastic Beanstalk                     │
+│  ┌─────────────────┐    ┌─────────────────┐                 │
+│  │   Load Balancer │    │      EC2        │                 │
+│  │    (nginx)      │───►│   Instance      │                 │
+│  │                 │    │  - Node.js App  │                 │
+│  └─────────────────┘    │  - React Build  │                 │
+│                         │  - Backend API  │                 │
+│                         │  - FFmpeg       │                 │
+│                         └─────────────────┘                 │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ## 🚀 Quick Start
@@ -335,6 +351,37 @@ cd frontend && npm run build
 - Configure proper CORS origins for your domain
 - Set up reverse proxy (nginx) for better performance
 - Consider using PM2 for backend process management
+
+## 🌐 AWS Elastic Beanstalk Deployment
+
+This application is ready for production deployment on AWS Elastic Beanstalk!
+
+### Quick Deployment
+```bash
+# Prepare for deployment
+./deploy-prep.sh
+
+# Initialize and deploy
+eb init
+eb create production
+eb deploy
+eb open
+```
+
+### Prerequisites for Deployment
+- AWS CLI configured with proper credentials
+- EB CLI installed (`pip install awsebcli`)
+- Node.js 18+ and npm 8+
+
+### Key Changes for Production
+- ✅ **Single Server**: Frontend served from backend (no separate React dev server)
+- ✅ **Environment Variables**: Production-ready configuration
+- ✅ **Relative URLs**: Frontend uses relative API calls in production
+- ✅ **Auto Build**: Frontend automatically builds during deployment
+- ✅ **FFmpeg Setup**: Automatic FFmpeg installation via EB extensions
+- ✅ **Health Checks**: Proper health endpoint for load balancer monitoring
+
+📖 **[Complete Deployment Guide](AWS_DEPLOYMENT_GUIDE.md)** - Detailed step-by-step instructions
 
 ## 📝 Recent Updates
 
